@@ -26,7 +26,7 @@ def render_sidebar(on_reset: Callable[[], None], debug_events: List[Dict[str, An
 
         st.divider()
         st.subheader("About")
-        st.write("Prototype UI. Next: Groq + (optional) LangChain + MCP tools.")
+        st.write("Current: Groq + (optional) LangChain + MCP tools.")
 
     # Render the debug panel pinned at the bottom-left INSIDE the sidebar
     if not st.session_state.get("show_debug", True):
