@@ -1,13 +1,7 @@
 import streamlit as st
 from app.state import init_state, reset_chat
 from app.ui import render_sidebar, render_header, render_messages
-
-def placeholder_bot_reply(user_text: str) -> str:
-    return (
-        "Thanks — I can help with that.\n\n"
-        f"You said: “{user_text}”\n\n"
-        "For now this is a placeholder reply. Next we will connect the LLM and MCP tools."
-    )
+from app.chat_engine import chat_reply
 
 def main() -> None:
     st.set_page_config(
@@ -27,13 +21,10 @@ def main() -> None:
     if user_text:
         st.session_state.messages.append({"role": "user", "content": user_text})
 
-        reply = placeholder_bot_reply(user_text)
-        st.session_state.messages.append({"role": "assistant", "content": reply})
+        assistant_text, debug_event = chat_reply(st.session_state.messages)
 
-        st.session_state.debug_events.append({
-            "type": "placeholder",
-            "message": "No tool calls yet. LLM/MCP integration comes next.",
-        })
+        st.session_state.messages.append({"role": "assistant", "content": assistant_text})
+        st.session_state.debug_events.append(debug_event)
 
         st.rerun()
 
