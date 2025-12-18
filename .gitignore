@@ -1,0 +1,69 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+pip-wheel-metadata/
+
+# ---- Testing / tooling ----
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.pytype/
+.cache/
+
+# ---- IDEs ----
+.vscode/
+.idea/
+*.iml
+
+# ---- OS files ----
+.DS_Store
+Thumbs.db
+
+# ---- Streamlit ----
+.streamlit/secrets.toml
+.streamlit/*.log
+
+# ---- Env / secrets ----
+.env
+.env.*
+!.env.example
+
+# ---- Logs ----
+*.log
+logs/
+*.out
+
+# ---- Jupyter ----
+.ipynb_checkpoints/
+
+# ---- Docker ----
+# (optional) ignore local override files
+docker-compose.override.yml
+
+# ---- Node (if added later) ----
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ---- Misc ----
+*.tmp
+*.swp
+*.swo
