@@ -209,14 +209,23 @@ def tool_command_guide() -> str:
 
 
 def parse_kv_args(s: str) -> Dict[str, Any]:
+    """
+    Parse: a=1 b='two words' c=xyz
+    Keep values as strings by default (avoid pin becoming int).
+    Convert booleans true/false.
+    """
     pattern = r"""(\w+)=(".*?"|'.*?'|[^\s]+)"""
     out: Dict[str, Any] = {}
     for k, v in re.findall(pattern, s):
         v = v.strip().strip('"').strip("'")
-        if v.lower() in {"true", "false"}:
-            out[k] = v.lower() == "true"
+
+        lv = v.lower()
+        if lv in {"true", "false"}:
+            out[k] = (lv == "true")
         else:
-            out[k] = int(v) if v.isdigit() else v
+            # keep as string
+            out[k] = v
+
     return out
 
 
@@ -323,7 +332,11 @@ def route_intent(user_text: str) -> Optional[Dict[str, Any]]:
         # demo-friendly shorthand -> real schema (customer_id + items[])
         customer_id = args.get("customer_id")
         sku = args.get("sku")
-        qty = args.get("qty", 1)
+        qty_raw = args.get("qty", "1")
+        try:
+            qty = int(qty_raw)
+        except Exception:
+            qty = 1
 
         if customer_id and sku:
             items = [{"sku": sku, "qty": qty}]
@@ -519,7 +532,7 @@ def chat_reply(messages: List[Dict[str, str]]) -> tuple[str, Dict[str, Any]]:
 
             if tool == "support_verify_customer_pin":
                 email = (args.get("email") or "").strip()
-                pin = (args.get("pin") or "").strip()
+                pin = str(args.get("pin") or "").strip()
                 if not email or not pin:
                     d = COMMAND_DEFS.get(tool)
                     return (
